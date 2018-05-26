@@ -1,0 +1,3 @@
+Constants
+(<td div="Member">s_max3DMarkTestDuration</td>\s+<td div="Value")>\d+<(/td>)
+$1>0<$2

@@ -1,0 +1,141 @@
+Storage
+\t<tr>\r\n\t</tr>\r\n\t<tr>\r\n\t</tr>\r\n
+	<tr>
+		<td div=""></td>
+		<td div="Part Type">SSD</td>
+		<td div="Class">TIC</td>
+		<td div="Manufacturer">Shean</td>
+		<td div="ID">SSD_TIC_4</td>
+		<td div="Part Name">Mega 500GB</td>
+		<td div="In Game">Yes</td>
+		<td div="Imported to Game">Yes</td>
+		<td div="Working in game">Yes</td>
+		<td div="In Shop">Yes</td>
+		<td div="Price">120</td>
+		<td div="SellPrice">40</td>
+		<td div="Level">1</td>
+		<td div="Percent Through">1</td>
+		<td div="Headline"></td>
+		<td div="Concat name">1 Shean Mega 500GB</td>
+		<td div="Model Supplied">No</td>
+		<td div="Licensor Approved">Yes</td>
+		<td div="Size GB">500</td>
+		<td div="Type">SSD</td>
+		<td div="Speed">500</td>
+		<td div="Asset Path">Prefabs/Generic/SSD</td>
+		<td div="Icon Path">ComponentIcons/Generic/HDD</td>
+		<td div="Product Page">N/A</td>
+		<td div="Notes"></td>
+	</tr>
+	<tr>
+		<td div=""></td>
+		<td div="Part Type">SSD</td>
+		<td div="Class">TIC</td>
+		<td div="Manufacturer">Shean</td>
+		<td div="ID">SSD_TIC_5</td>
+		<td div="Part Name">Mega 750GB</td>
+		<td div="In Game">Yes</td>
+		<td div="Imported to Game">Yes</td>
+		<td div="Working in game">Yes</td>
+		<td div="In Shop">Yes</td>
+		<td div="Price">140</td>
+		<td div="SellPrice">47</td>
+		<td div="Level">1</td>
+		<td div="Percent Through">1</td>
+		<td div="Headline"></td>
+		<td div="Concat name">1 Shean Mega 750GB</td>
+		<td div="Model Supplied">No</td>
+		<td div="Licensor Approved">Yes</td>
+		<td div="Size GB">750</td>
+		<td div="Type">SSD</td>
+		<td div="Speed">520</td>
+		<td div="Asset Path">Prefabs/Generic/SSD</td>
+		<td div="Icon Path">ComponentIcons/Generic/HDD</td>
+		<td div="Product Page">N/A</td>
+		<td div="Notes"></td>
+	</tr>
+	<tr>
+		<td div=""></td>
+		<td div="Part Type">SSD</td>
+		<td div="Class">TIC</td>
+		<td div="Manufacturer">Shean</td>
+		<td div="ID">SSD_TIC_6</td>
+		<td div="Part Name">Mega 1000GB</td>
+		<td div="In Game">Yes</td>
+		<td div="Imported to Game">Yes</td>
+		<td div="Working in game">Yes</td>
+		<td div="In Shop">Yes</td>
+		<td div="Price">160</td>
+		<td div="SellPrice">53</td>
+		<td div="Level">1</td>
+		<td div="Percent Through">1</td>
+		<td div="Headline"></td>
+		<td div="Concat name">1 Shean Mega 1000GB</td>
+		<td div="Model Supplied">No</td>
+		<td div="Licensor Approved">Yes</td>
+		<td div="Size GB">1000</td>
+		<td div="Type">SSD</td>
+		<td div="Speed">540</td>
+		<td div="Asset Path">Prefabs/Generic/SSD</td>
+		<td div="Icon Path">ComponentIcons/Generic/HDD</td>
+		<td div="Product Page">N/A</td>
+		<td div="Notes"></td>
+	</tr>
+	<tr>
+		<td div=""></td>
+		<td div="Part Type">SSD</td>
+		<td div="Class">TIC</td>
+		<td div="Manufacturer">Shean</td>
+		<td div="ID">SSD_TIC_7</td>
+		<td div="Part Name">Mega 1500GB</td>
+		<td div="In Game">Yes</td>
+		<td div="Imported to Game">Yes</td>
+		<td div="Working in game">Yes</td>
+		<td div="In Shop">Yes</td>
+		<td div="Price">180</td>
+		<td div="SellPrice">60</td>
+		<td div="Level">1</td>
+		<td div="Percent Through">1</td>
+		<td div="Headline"></td>
+		<td div="Concat name">1 Shean Mega 1500GB</td>
+		<td div="Model Supplied">No</td>
+		<td div="Licensor Approved">Yes</td>
+		<td div="Size GB">1500</td>
+		<td div="Type">SSD</td>
+		<td div="Speed">560</td>
+		<td div="Asset Path">Prefabs/Generic/SSD</td>
+		<td div="Icon Path">ComponentIcons/Generic/HDD</td>
+		<td div="Product Page">N/A</td>
+		<td div="Notes"></td>
+	</tr>
+	<tr>
+		<td div=""></td>
+		<td div="Part Type">SSD</td>
+		<td div="Class">TIC</td>
+		<td div="Manufacturer">Shean</td>
+		<td div="ID">SSD_TIC_8</td>
+		<td div="Part Name">Mega 2000GB</td>
+		<td div="In Game">Yes</td>
+		<td div="Imported to Game">Yes</td>
+		<td div="Working in game">Yes</td>
+		<td div="In Shop">Yes</td>
+		<td div="Price">200</td>
+		<td div="SellPrice">67</td>
+		<td div="Level">1</td>
+		<td div="Percent Through">1</td>
+		<td div="Headline"></td>
+		<td div="Concat name">1 Shean Mega 2000GB</td>
+		<td div="Model Supplied">No</td>
+		<td div="Licensor Approved">Yes</td>
+		<td div="Size GB">2000</td>
+		<td div="Type">SSD</td>
+		<td div="Speed">560</td>
+		<td div="Asset Path">Prefabs/Generic/SSD</td>
+		<td div="Icon Path">ComponentIcons/Generic/HDD</td>
+		<td div="Product Page">N/A</td>
+		<td div="Notes"></td>
+	</tr>
+	<tr>
+	</tr>
+	<tr>
+	</tr>
