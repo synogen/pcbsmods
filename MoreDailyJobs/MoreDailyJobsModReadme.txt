@@ -1,9 +1,9 @@
-## More SSD Sizes for PC Building Simulator
-I thought the SSDs in PC Building Simulator were pretty small compared to the usual sizes you can buy nowadays, so this mod adds more Shean Mega SSDs with sizes ranging from 500GB to 2000GB. They also get slightly faster the bigger they are, but are capped at 560MB/s since this is around the limit for S-ATA SSDs right now. I wanted to keep the prices close to the way the original prices are so each size step costs 20 more. Of course you can easily change this in the assetmod-file if you like, but don't blame me if the game stops working due to formatting mistakes etc. ;-).
+## More Daily Jobs for PC Building Simulator
+Increases the number of daily E-Mails with jobs to 6 instead of 3. If you want to have a custom amount of job E-Mails every day just edit MoreDailyJobs.assetmod with a text editor and change the 6 on the third line to whatever you want. Make sure to keep the rest of the file the same or the patching might not work.
 
 ## Install
 1. Extract all files in the archive to the main directory of PC Building Simulator
-2. Run MoreSSDSizesInstall.cmd
+2. Run MoreDailyJobsInstall.cmd
 3. If the patching has been successful you can start the game (no exceptions displayed in the log plus it should say "Done" somewhere)
 
 ## Notes
