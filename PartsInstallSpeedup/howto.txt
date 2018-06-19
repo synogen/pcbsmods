@@ -1,0 +1,21 @@
+Assembly-CSharp-firstpass.dll
+InstallingPartState.HandleExit()
+this.m_installSpeed = 4f; -> 16f (hex 00008040 -> 00008041)
+
+InstallingPartState.InitUpgrades()
+both this.m_installSpeed = 4f; -> 16f
+
+InstallingPartState.AnimateComponent()
+1f : 4f -> 4f : 16f
+
+InstallingPartState.AnimateOutComponent()
+1f : 4f -> 4f : 16f
+
+InstallingPartState.AnimateBridge()
+1f : 4f -> 4f : 16f
+
+InstallingPartState.AnimatePump()
+1f : 4f -> 4f : 16f
+
+InstallingPartState.DoScrews()
+4f -> 16f

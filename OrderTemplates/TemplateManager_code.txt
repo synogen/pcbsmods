@@ -1,0 +1,96 @@
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Formatters.Binary;
+
+// Token: 0x020004FA RID: 1274
+public class TemplateManager
+{
+	// Token: 0x060028A2 RID: 10402 RVA: 0x0001CE66 File Offset: 0x0001B066
+	private TemplateManager()
+	{
+		this.m_templates = new Dictionary<string, List<ShopEntry>>();
+		this.LoadContentFromFile();
+	}
+
+	// Token: 0x17000E01 RID: 3585
+	// (get) Token: 0x060028A3 RID: 10403 RVA: 0x0008B0BC File Offset: 0x000892BC
+	public static TemplateManager Instance
+	{
+		get
+		{
+			object obj = TemplateManager.padlock;
+			TemplateManager result;
+			lock (obj)
+			{
+				if (TemplateManager.instance == null)
+				{
+					TemplateManager.instance = new TemplateManager();
+				}
+				result = TemplateManager.instance;
+			}
+			return result;
+		}
+	}
+
+	// Token: 0x060028A5 RID: 10405 RVA: 0x0008B108 File Offset: 0x00089308
+	public void AddTemplate(string name, List<ShopEntry> list)
+	{
+		List<ShopEntry> list2 = new List<ShopEntry>();
+		list2.AddRange(list);
+		this.m_templates.Add(name, list2);
+		this.SaveContentToFile();
+	}
+
+	// Token: 0x060028A6 RID: 10406 RVA: 0x0001CE91 File Offset: 0x0001B091
+	public void RemoveTemplate(string name)
+	{
+		this.m_templates.Remove(name);
+		this.SaveContentToFile();
+	}
+
+	// Token: 0x060028A7 RID: 10407 RVA: 0x0008B138 File Offset: 0x00089338
+	public void GetTemplate(string name, out List<ShopEntry> list)
+	{
+		List<ShopEntry> list2;
+		this.m_templates.TryGetValue(name, out list2);
+		list = list2;
+	}
+
+	// Token: 0x060028A8 RID: 10408 RVA: 0x0001CEA6 File Offset: 0x0001B0A6
+	public Dictionary<string, List<ShopEntry>> GetAllTemplates()
+	{
+		return this.m_templates;
+	}
+
+	// Token: 0x060028A9 RID: 10409 RVA: 0x0008B158 File Offset: 0x00089358
+	private void SaveContentToFile()
+	{
+		IFormatter formatter = new BinaryFormatter();
+		Stream stream = new FileStream("shoppingTemplates.bin", FileMode.Create, FileAccess.Write, FileShare.None);
+		formatter.Serialize(stream, this.m_templates);
+		stream.Close();
+	}
+
+	// Token: 0x060028AA RID: 10410 RVA: 0x0008B18C File Offset: 0x0008938C
+	private void LoadContentFromFile()
+	{
+		if (File.Exists("shoppingTemplates.bin"))
+		{
+			IFormatter formatter = new BinaryFormatter();
+			Stream stream = new FileStream("shoppingTemplates.bin", FileMode.OpenOrCreate, FileAccess.Read, FileShare.None);
+			this.m_templates = (Dictionary<string, List<ShopEntry>>)formatter.Deserialize(stream);
+			stream.Close();
+		}
+	}
+
+	// Token: 0x04001D10 RID: 7440
+	private static TemplateManager instance = null;
+
+	// Token: 0x04001D11 RID: 7441
+	private static readonly object padlock = new object();
+
+	// Token: 0x04001D12 RID: 7442
+	private Dictionary<string, List<ShopEntry>> m_templates;
+}

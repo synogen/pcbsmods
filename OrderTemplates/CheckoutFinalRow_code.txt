@@ -1,0 +1,140 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using UnityEngine;
+using UnityEngine.Events;
+using UnityEngine.UI;
+
+// Token: 0x020003D1 RID: 977
+public class CheckoutFinalRow : MonoBehaviour
+{
+	// Token: 0x06002300 RID: 8960
+	public void Set(string total, string cash, bool canBuy)
+	{
+		this.m_total.text = total;
+		this.m_cash.text = cash;
+		this.m_buyButton.interactable = canBuy;
+		this.CreateTemplateUI();
+	}
+
+	// Token: 0x06002301 RID: 8961
+	public void OnBuy()
+	{
+		base.GetComponentInParent<Shop>().OnBuy();
+	}
+
+	// Token: 0x06002302 RID: 8962
+	private void CreateTemplateUI()
+	{
+		Text text = UnityEngine.Object.Instantiate<Text>(this.m_total, this.m_buyButton.transform.parent);
+		text.transform.localPosition = new Vector3(this.m_buyButton.transform.localPosition.x - 215f, this.m_buyButton.transform.localPosition.y - 40f, this.m_buyButton.transform.localPosition.z);
+		text.GetComponent<RectTransform>().sizeDelta = new Vector2(text.GetComponent<RectTransform>().sizeDelta.x + 50f, text.GetComponent<RectTransform>().sizeDelta.y + 0f);
+		text.text = "Order Templates";
+		Button button = this.CreateTemplateButton(this.m_buyButton, "Save As Template", 50f, 0f, -120f, -70f);
+		button.onClick.AddListener(new UnityAction(this.SaveTemplate));
+		button.interactable = this.m_buyButton.interactable;
+		this.templateName = this.CreateInput(base.GetComponentInParent<Shop>().m_searchInResults, this.m_buyButton, "Template name", 70f, 0f, -360f, -70f);
+		GameObject gameObject = new GameObject();
+		gameObject.AddComponent<LayoutElement>();
+		gameObject.GetComponent<LayoutElement>().preferredHeight = 25f;
+		gameObject.GetComponent<LayoutElement>().minHeight = 25f;
+		gameObject.AddComponent<ContentSizeFitter>();
+		gameObject.GetComponent<ContentSizeFitter>().verticalFit = ContentSizeFitter.FitMode.PreferredSize;
+		gameObject.transform.SetParent(base.GetComponentInParent<Shop>().m_checkoutList.content.transform, false);
+		base.GetComponentInParent<Shop>().m_rows.Add(gameObject.transform);
+		this.UpdateTemplateView(gameObject.GetComponent<LayoutElement>());
+		LayoutRebuilder.MarkLayoutForRebuild(this.m_buyButton.transform.parent as RectTransform);
+	}
+
+	// Token: 0x06002303 RID: 8963
+	public void SaveTemplate()
+	{
+		TemplateManager.Instance.AddTemplate(this.templateName.text, base.GetComponentInParent<Shop>().m_trolley);
+		base.GetComponentInParent<Shop>().OnCheckout();
+	}
+
+	// Token: 0x06002304 RID: 8964
+	private Button CreateTemplateButton(Button sourceButton, string label, float sizeOffsetX, float sizeOffsetY, float offsetFromSourceX, float offsetFromSourceY)
+	{
+		Button button = UnityEngine.Object.Instantiate<Button>(sourceButton, sourceButton.transform.parent);
+		button.transform.localPosition = new Vector3(sourceButton.transform.localPosition.x + offsetFromSourceX, sourceButton.transform.localPosition.y + offsetFromSourceY, sourceButton.transform.localPosition.z);
+		button.GetComponent<RectTransform>().sizeDelta = new Vector2(button.GetComponent<RectTransform>().sizeDelta.x + sizeOffsetX, button.GetComponent<RectTransform>().sizeDelta.y + sizeOffsetY);
+		button.colors = new ColorBlock
+		{
+			normalColor = new Color(0.45f, 0.45f, 1f),
+			highlightedColor = new Color(0.5f, 0.5f, 1f),
+			disabledColor = new Color(0.7f, 0.7f, 1f),
+			pressedColor = new Color(0.4f, 0.4f, 1f),
+			colorMultiplier = 1f
+		};
+		button.GetComponentInChildren<Text>().text = label;
+		button.onClick = new Button.ButtonClickedEvent();
+		button.interactable = true;
+		return button;
+	}
+
+	// Token: 0x06002306 RID: 8966
+	private InputField CreateInput(InputField sourceInput, Button refButton, string placeholder, float sizeOffsetX, float sizeOffsetY, float offsetFromSourceX, float offsetFromSourceY)
+	{
+		InputField inputField = UnityEngine.Object.Instantiate<InputField>(sourceInput, refButton.transform.parent);
+		inputField.GetComponent<RectTransform>().anchorMax = refButton.GetComponent<RectTransform>().anchorMax;
+		inputField.GetComponent<RectTransform>().anchorMin = refButton.GetComponent<RectTransform>().anchorMin;
+		inputField.transform.localPosition = new Vector3(refButton.transform.localPosition.x + offsetFromSourceX, refButton.transform.localPosition.y + offsetFromSourceY, refButton.transform.localPosition.z);
+		inputField.GetComponent<RectTransform>().sizeDelta = new Vector2(refButton.GetComponent<RectTransform>().sizeDelta.x + sizeOffsetX, refButton.GetComponent<RectTransform>().sizeDelta.y + sizeOffsetY);
+		inputField.gameObject.GetComponentInChildren<Text>().text = "Template name";
+		inputField.onValueChanged.RemoveAllListeners();
+		return inputField;
+	}
+
+	// Token: 0x060028F4 RID: 10484
+	public void UpdateTemplateView(LayoutElement le)
+	{
+		float num = -110f;
+		List<string> list = TemplateManager.Instance.GetAllTemplates().Keys.ToList<string>();
+		list.Sort();
+		using (List<string>.Enumerator enumerator = list.GetEnumerator())
+		{
+			while (enumerator.MoveNext())
+			{
+				string key = enumerator.Current;
+				this.CreateTemplateButton(this.m_buyButton, "Restore " + key, 80f, 0f, -370f, num).onClick.AddListener(delegate()
+				{
+					List<ShopEntry> collection;
+					TemplateManager.Instance.GetTemplate(key, out collection);
+					this.GetComponentInParent<Shop>().m_trolley.Clear();
+					this.GetComponentInParent<Shop>().m_trolley.AddRange(collection);
+					this.GetComponentInParent<Shop>().UpdateTrolley();
+					this.GetComponentInParent<Shop>().OnCheckout();
+				});
+				this.CreateTemplateButton(this.m_buyButton, "Add from " + key, 80f, 0f, -185f, num).onClick.AddListener(delegate()
+				{
+					List<ShopEntry> collection;
+					TemplateManager.Instance.GetTemplate(key, out collection);
+					this.GetComponentInParent<Shop>().m_trolley.AddRange(collection);
+					this.GetComponentInParent<Shop>().UpdateTrolley();
+					this.GetComponentInParent<Shop>().OnCheckout();
+				});
+				this.CreateTemplateButton(this.m_buyButton, "Delete " + key, 80f, 0f, 0f, num).onClick.AddListener(delegate()
+				{
+					TemplateManager.Instance.RemoveTemplate(key);
+					this.GetComponentInParent<Shop>().OnCheckout();
+				});
+				num -= 40f;
+				le.preferredHeight += 30f;
+				le.minHeight += 30f;
+			}
+		}
+	}
+
+	// Token: 0x040016AC RID: 5804
+	public Text m_total;
+
+	// Token: 0x040016AD RID: 5805
+	public Text m_cash;
+
+	// Token: 0x040016AE RID: 5806
+	public Button m_buyButton;
+
+	// Token: 0x040016AF RID: 5807
+	public InputField templateName;
+}

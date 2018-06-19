@@ -2,7 +2,7 @@
 Since PCBS version 0.8.2.0 RAM can not be installed if there is a RAM stick already installed that it does not match with (frequency, speed, size, manufacturer). It will simply say that it is incompatible.
 This mod rectifies this change so different RAM sticks can be mixed again.
 
-This mod is compatible with my customer stats mod.
+Fully compatible with my customer stats mod, just make sure you use this patch AFTER installing the customer stats mod or any other mods that fully replace the Assembly-CSharp-firstpass.dll.
 
 ## Install
 1. Extract all files in the archive to the main directory of PC Building Simulator

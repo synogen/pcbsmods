@@ -1,0 +1,3 @@
+Assembly-CSharp-firstpass.dll
+Walk.Move()
+last line replace 8f with 16f (hex 00000041 to 00008041)
