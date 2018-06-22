@@ -1,9 +1,10 @@
-## Faster 3D Mark for PC Building Simulator
-Cuts 3DMark running time to about 9 seconds. You can also specify your own custom running time by opening the assetmod file in a text editor and changing the third line where it says 3. Put the duration in seconds you want divided by 3, so if you want 30 seconds runtime you replace 3 with 10. No guarantees though!
+## All Random Jobs Available for Max Level for PC Building Simulator
+Makes all the low level random jobs that disappear as you level up in career mode available again up to the maximum level (currently 25).
+!! IF YOU USE MY REMOVE BENCHMARK UPGRADE JOBS MOD MAKE SURE TO INSTALL THAT ONE AFTER THIS ONE, OTHERWISE THIS WILL RESET THE MAX LEVELS !!
 
 ## Install
 1. Extract all files in the archive to the main directory of PC Building Simulator
-2. Run Faster3DMarkInstall.cmd
+2. Run MaxLevelAllRandomJobsInstall.cmd
 3. If the patching has been successful you can start the game (no exceptions displayed in the log plus it should say "Done" somewhere)
 
 ## Notes

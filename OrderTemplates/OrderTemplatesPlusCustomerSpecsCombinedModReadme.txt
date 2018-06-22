@@ -29,4 +29,4 @@ Incompatible with:
 2. If it asks you to overwrite files while extracting say "yes"
 
 ## Notes
-Tested on PC Building Simulator version 0.8.2.1.
+Tested on PC Building Simulator version 0.8.3.2.

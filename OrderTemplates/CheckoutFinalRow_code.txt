@@ -5,10 +5,10 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
-// Token: 0x020003D1 RID: 977
+
 public class CheckoutFinalRow : MonoBehaviour
 {
-	// Token: 0x06002300 RID: 8960
+	
 	public void Set(string total, string cash, bool canBuy)
 	{
 		this.m_total.text = total;
@@ -17,13 +17,13 @@ public class CheckoutFinalRow : MonoBehaviour
 		this.CreateTemplateUI();
 	}
 
-	// Token: 0x06002301 RID: 8961
+	
 	public void OnBuy()
 	{
 		base.GetComponentInParent<Shop>().OnBuy();
 	}
 
-	// Token: 0x06002302 RID: 8962
+	
 	private void CreateTemplateUI()
 	{
 		Text text = UnityEngine.Object.Instantiate<Text>(this.m_total, this.m_buyButton.transform.parent);
@@ -46,14 +46,14 @@ public class CheckoutFinalRow : MonoBehaviour
 		LayoutRebuilder.MarkLayoutForRebuild(this.m_buyButton.transform.parent as RectTransform);
 	}
 
-	// Token: 0x06002303 RID: 8963
+	
 	public void SaveTemplate()
 	{
 		TemplateManager.Instance.AddTemplate(this.templateName.text, base.GetComponentInParent<Shop>().m_trolley);
 		base.GetComponentInParent<Shop>().OnCheckout();
 	}
 
-	// Token: 0x06002304 RID: 8964
+	
 	private Button CreateTemplateButton(Button sourceButton, string label, float sizeOffsetX, float sizeOffsetY, float offsetFromSourceX, float offsetFromSourceY)
 	{
 		Button button = UnityEngine.Object.Instantiate<Button>(sourceButton, sourceButton.transform.parent);
@@ -73,7 +73,7 @@ public class CheckoutFinalRow : MonoBehaviour
 		return button;
 	}
 
-	// Token: 0x06002306 RID: 8966
+	
 	private InputField CreateInput(InputField sourceInput, Button refButton, string placeholder, float sizeOffsetX, float sizeOffsetY, float offsetFromSourceX, float offsetFromSourceY)
 	{
 		InputField inputField = UnityEngine.Object.Instantiate<InputField>(sourceInput, refButton.transform.parent);
@@ -86,7 +86,7 @@ public class CheckoutFinalRow : MonoBehaviour
 		return inputField;
 	}
 
-	// Token: 0x060028F4 RID: 10484
+	
 	public void UpdateTemplateView(LayoutElement le)
 	{
 		float num = -110f;
@@ -126,15 +126,15 @@ public class CheckoutFinalRow : MonoBehaviour
 		}
 	}
 
-	// Token: 0x040016AC RID: 5804
+	
 	public Text m_total;
 
-	// Token: 0x040016AD RID: 5805
+	
 	public Text m_cash;
 
-	// Token: 0x040016AE RID: 5806
+	
 	public Button m_buyButton;
 
-	// Token: 0x040016AF RID: 5807
+	
 	public InputField templateName;
 }

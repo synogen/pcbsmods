@@ -1,5 +1,6 @@
 Storage
-\t<tr>\r\n\t</tr>\r\n\t<tr>\r\n\t</tr>\r\n
+</tr>\s+</table>
+	</tr>
 	<tr>
 		<td div=""></td>
 		<td div="Part Type">SSD</td>
@@ -135,7 +136,4 @@ Storage
 		<td div="Product Page">N/A</td>
 		<td div="Notes"></td>
 	</tr>
-	<tr>
-	</tr>
-	<tr>
-	</tr>
+</table>
