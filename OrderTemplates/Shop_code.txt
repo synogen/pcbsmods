@@ -1,3 +1,3 @@
-m_trolley -> public
-m_rows -> public
-UpdateTrolley() -> public
+m_trolley -> internal
+m_rows -> internal
+UpdateTrolley() -> internal

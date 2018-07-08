@@ -27,6 +27,7 @@ public class Job : IEmail, IDeserializationCallback
 					case PartDesc.Type.RAM:
 					case PartDesc.Type.CPU:
 					case PartDesc.Type.SSD:
+					case PartDesc.Type.PSU:
 					string type = part.GetPart().m_type == PartDesc.Type.MOTHERBOARD ? "MB" : part.GetPart().m_type.ToString();
 					specs = specs + type + ":  \t" + part.GetPart().m_uiName + "\n";
 					break;
