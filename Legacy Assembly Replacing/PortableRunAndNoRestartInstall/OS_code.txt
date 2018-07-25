@@ -1,0 +1,64 @@
+OS
+
+using System.Linq;
+
+internal void AddProgram(string program)
+{
+	Array.Resize<string>(ref this.m_programsInstalled, this.m_programsInstalled.Length + 1);
+	this.m_programsInstalled[this.m_programsInstalled.Length - 1] = program;
+}
+
+
+internal void RemoveProgram(string program)
+{
+	string[] programs = new string[this.m_programsInstalled.Length - 1];
+	int index = Array.IndexOf<string>(this.m_programsInstalled, program);
+	if (index > 0)
+	{
+		Array.Copy(this.m_programsInstalled, 0, programs, 0, index);
+	}
+	if (index < this.m_programsInstalled.Length - 1)
+	{
+		Array.Copy(this.m_programsInstalled, index + 1, programs, index, this.m_programsInstalled.Length - index - 1);
+	}
+	Array.Resize<string>(ref this.m_programsInstalled, this.m_programsInstalled.Length - 1);
+	Array.Copy(programs, this.m_programsInstalled, this.m_programsInstalled.Length);
+}
+
+
+internal void UpdatePrograms()
+{
+	foreach (ProgramIcon programIcon in base.transform.GetComponentsInChildren<ProgramIcon>())
+	{
+		if (programIcon.transform.parent == base.transform)
+		{
+			programIcon.transform.parent = null;
+			UnityEngine.Object.Destroy(programIcon);
+		}
+	}
+	this.m_icons.Clear();
+	float num = 100f;
+	Rect rect = (base.transform as RectTransform).rect;
+	float num2 = rect.height - this.m_iconSpacing;
+	using (IEnumerator<OSProgramDesc> enumerator = PartsDatabase.GetAllPrograms().GetEnumerator())
+	{
+		while (enumerator.MoveNext())
+		{
+			OSProgramDesc prog = enumerator.Current;
+			if (Array.Find<string>(this.m_programsInstalled, (string p) => p == prog.m_id) != null)
+			{
+				ProgramIcon programIcon2 = UnityEngine.Object.Instantiate<ProgramIcon>(this.m_programIconPrefab);
+				programIcon2.Init(prog, null);
+				programIcon2.transform.SetParent(base.transform, false);
+				programIcon2.transform.localPosition = new Vector3(num, num2);
+				this.m_icons.Add(programIcon2);
+				num2 -= this.m_iconSpacing;
+				if (num2 - this.m_iconSpacing < 0f)
+				{
+					num += this.m_iconSpacing;
+					num2 = rect.height - this.m_iconSpacing;
+				}
+			}
+		}
+	}
+}

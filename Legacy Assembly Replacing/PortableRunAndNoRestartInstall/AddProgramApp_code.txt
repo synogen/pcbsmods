@@ -1,0 +1,233 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using I2.Loc;
+using UnityEngine;
+using UnityEngine.Events;
+using UnityEngine.UI;
+
+// Token: 0x020003CB RID: 971
+public class AddProgramApp : MonoBehaviour
+{
+	// Token: 0x06002392 RID: 9106
+	private void Start()
+	{
+		this.m_os = base.GetComponentInParent<OS>();
+		this.m_os.m_gainFocus += this.OnFocus;
+		DayMonitor.OnEnd(this, new Action(this.OnDayEnd));
+		RectTransform rt = this.m_addButton.GetComponent<RectTransform>();
+		rt.sizeDelta = new Vector2(rt.sizeDelta.x - 78f, rt.sizeDelta.y);
+		RectTransform rt2 = this.m_removeButton.GetComponent<RectTransform>();
+		rt2.sizeDelta = new Vector2(rt2.sizeDelta.x - 78f, rt2.sizeDelta.y);
+		this.m_addButton.transform.localPosition = new Vector3(this.m_addButton.transform.localPosition.x + 156f, this.m_addButton.transform.localPosition.y, this.m_addButton.transform.localPosition.z);
+		this.m_addButton.GetComponentInChildren<Text>().text = "Add";
+		this.m_removeButton.transform.localPosition = new Vector3(this.m_removeButton.transform.localPosition.x + 78f, this.m_removeButton.transform.localPosition.y, this.m_removeButton.transform.localPosition.z);
+		this.m_removeButton.GetComponentInChildren<Text>().text = "Remove";
+		this.m_portableButton = this.CreateTemplateButton(this.m_addButton, "Portable", 0f, 0f, -(this.m_addButton.GetComponent<RectTransform>().rect.width + 10f), 0f);
+		this.m_portableButton.onClick.AddListener(new UnityAction(this.SetPortableMode));
+		this.SetPortableMode();
+	}
+
+	// Token: 0x06002393 RID: 9107
+	private void OnDestroy()
+	{
+		this.m_os.m_gainFocus -= this.OnFocus;
+	}
+
+	// Token: 0x06002394 RID: 9108
+	private void OnFocus()
+	{
+		this.m_message.gameObject.SetActive(false);
+		this.UpdateProgramList();
+	}
+
+	// Token: 0x06002395 RID: 9109
+	private void SetMessage(string message)
+	{
+		this.m_message.gameObject.SetActive(true);
+		this.m_message.text = message;
+	}
+
+	// Token: 0x06002397 RID: 9111
+	private void UpdateProgramList()
+	{
+		
+	}
+
+	// Token: 0x06002398 RID: 9112
+	private void ShowPrograms()
+	{
+		this.m_message.gameObject.SetActive(false);
+		this.m_restartPopup.gameObject.SetActive(false);
+		this.UpdateProgramList();
+	}
+
+	// Token: 0x06002399 RID: 9113
+	private IEnumerator ShowProgress(float start, float end, float duration, bool diskAccess)
+	{
+		float time = 0f;
+		ComputerSim sim = base.GetComponentInParent<VirtualComputer>().GetComputerSim();
+		while (time < duration)
+		{
+			time += Time.deltaTime * UnityEngine.Random.Range(0.5f, 10f) * ((!diskAccess) ? 1f : sim.GetStorageSpeedFactor());
+			this.m_installProgress.fillAmount = Mathf.Lerp(start, end, time / duration);
+			if (!this.m_dayEnded)
+			{
+				yield return new WaitForEndOfFrame();
+			}
+		}
+		this.m_installProgress.fillAmount = end;
+		yield break;
+	}
+
+	// Token: 0x0600239A RID: 9114
+	private void ShowProgressDialog(string action, OSProgramDesc desc)
+	{
+		this.m_actionName.text = action;
+		this.m_installProgramName.text = desc.m_uiName;
+		this.m_installPopup.SetActive(true);
+	}
+
+	// Token: 0x0600239B RID: 9115
+	private void ShowRestartDialog()
+	{
+		this.m_installPopup.SetActive(false);
+		this.m_restartPopup.SetActive(true);
+	}
+
+	// Token: 0x0600239C RID: 9116
+	private IEnumerator Install(OSProgramDesc desc)
+	{
+		this.m_dayEnded = false;
+		this.ShowProgressDialog(ScriptLocalization.AddPrograms.INSTALLING, desc);
+		yield return this.ShowProgress(0f, 0.9f, (float)desc.m_installTime * 0.4f, true);
+		yield return this.ShowProgress(0.9f, 0.95f, (float)desc.m_installTime * 0.6f, true);
+		yield return this.ShowProgress(0.95f, 1f, 1f, false);
+		ComputerSoftware software = base.GetComponentInParent<VirtualComputer>().GetComputer().m_software;
+		software.m_programs = new List<string>(software.m_programs)
+		{
+			desc.m_id
+		}.ToArray();
+		this.m_installPopup.SetActive(false);
+		this.m_os.AddProgram(desc.m_id);
+		this.m_os.UpdatePrograms();
+		this.UpdateProgramList();
+		yield break;
+	}
+
+	// Token: 0x0600239D RID: 9117
+	private IEnumerator Uninstall(OSProgramDesc desc)
+	{
+		this.m_dayEnded = false;
+		this.ShowProgressDialog(ScriptLocalization.AddPrograms.REMOVING, desc);
+		yield return this.ShowProgress(0f, 0.9f, (float)desc.m_removeTime * 0.2f, true);
+		yield return this.ShowProgress(0.9f, 0.95f, (float)desc.m_removeTime * 0.8f, true);
+		yield return this.ShowProgress(0.95f, 1f, 1f, false);
+		ComputerSoftware software = base.GetComponentInParent<VirtualComputer>().GetComputer().m_software;
+		List<string> list = new List<string>(software.m_programs);
+		list.Remove(desc.m_id);
+		software.m_programs = list.ToArray();
+		this.m_installPopup.SetActive(false);
+		this.m_os.RemoveProgram(desc.m_id);
+		this.m_os.UpdatePrograms();
+		this.UpdateProgramList();
+		yield break;
+	}
+
+	// Token: 0x0600239E RID: 9118
+	public void OnRestartYes()
+	{
+		base.GetComponentInParent<VirtualComputer>().Restart();
+	}
+
+	// Token: 0x0600239F RID: 9119
+	public void OnRestartNo()
+	{
+		this.m_restartPopup.SetActive(false);
+		this.ShowPrograms();
+	}
+
+	// Token: 0x060023A0 RID: 9120
+	private void OnDayEnd()
+	{
+		this.m_dayEnded = true;
+	}
+
+	// Token: 0x06002ABA RID: 10938
+	private Button CreateTemplateButton(Button sourceButton, string label, float sizeOffsetX, float sizeOffsetY, float offsetFromSourceX, float offsetFromSourceY)
+	{
+		Button button = UnityEngine.Object.Instantiate<Button>(sourceButton, sourceButton.transform.parent);
+		button.transform.localPosition = new Vector3(sourceButton.transform.localPosition.x + offsetFromSourceX, sourceButton.transform.localPosition.y + offsetFromSourceY, sourceButton.transform.localPosition.z);
+		button.GetComponent<RectTransform>().sizeDelta = new Vector2(button.GetComponent<RectTransform>().sizeDelta.x + sizeOffsetX, button.GetComponent<RectTransform>().sizeDelta.y + sizeOffsetY);
+		button.colors = sourceButton.colors;
+		button.GetComponentInChildren<Text>().text = label;
+		button.onClick = new Button.ButtonClickedEvent();
+		button.interactable = true;
+		return button;
+	}
+
+	// Token: 0x06002BE4 RID: 11236
+	public void SetMode(int mode)
+	{
+		this.m_portableButton.interactable = (mode != 1);
+		this.m_addButton.interactable = (mode != 2);
+		this.m_removeButton.interactable = (mode != 3);
+		this.m_addMode = mode;
+		this.ShowPrograms();
+	}
+
+	// Token: 0x06002C1A RID: 11290
+	public void SetMode(bool mode)
+	{
+		this.SetMode(mode ? 2 : 3);
+	}
+
+	// Token: 0x06002C4E RID: 11342
+	private void SetPortableMode()
+	{
+		this.SetMode(1);
+	}
+
+	// Token: 0x0400164C RID: 5708
+	public Text m_message;
+
+	// Token: 0x0400164D RID: 5709
+	public Button m_addButton;
+
+	// Token: 0x0400164E RID: 5710
+	public Button m_removeButton;
+
+	// Token: 0x0400164F RID: 5711
+	public ScrollRect m_programList;
+
+	// Token: 0x04001650 RID: 5712
+	public ProgramIcon programIconPrefab;
+
+	// Token: 0x04001651 RID: 5713
+	public GameObject m_installPopup;
+
+	// Token: 0x04001652 RID: 5714
+	public GameObject m_restartPopup;
+
+	// Token: 0x04001653 RID: 5715
+	public Text m_actionName;
+
+	// Token: 0x04001654 RID: 5716
+	public Text m_installProgramName;
+
+	// Token: 0x04001655 RID: 5717
+	public Image m_installProgress;
+
+	// Token: 0x04001656 RID: 5718
+	private OS m_os;
+
+	// Token: 0x04001658 RID: 5720
+	private bool m_dayEnded;
+
+	// Token: 0x04001F2E RID: 7982
+	private int m_addMode;
+
+	// Token: 0x04001F81 RID: 8065
+	public Button m_portableButton;
+}
